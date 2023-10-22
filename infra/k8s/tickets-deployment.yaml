@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tickets # Tell the deployment which pods it should be creating and managing
+  template: # Describe the pod that will be created
+    metadata:
+      labels:
+        app: tickets
+    spec:
+      containers: # List of containers that should be running inside the pod
+        - name: tickets # Name of the container, only used within the pod, not externally, for logging purposes
+          image: easymomo/tickets
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name # Use the pod name as the client id
+            - name: NATS_URL
+              value: "http://nats-cluster-ip-service:4222"
+            - name: NATS_CLUSTER_ID
+              value: "ticketing"
+            - name: MONGO_URI
+              value: "mongodb://tickets-mongo-service:27017/tickets"
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: JWT_KEY
+                  name: jwt-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tickets-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    app: tickets
+  ports:
+    - name: tickets
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

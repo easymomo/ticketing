@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth # Tell the deployment which pods it should be creating and managing
+  template: # Describe the pod that will be created
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers: # List of containers that should be running inside the pod
+        - name: auth # Name of the container, only used within the pod, not externally, for logging purposes
+          image: easymomo/auth
+          env:
+            - name: MONGO_URI
+              value: "mongodb://auth-mongo-service:27017/auth"
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: JWT_KEY
+                  name: jwt-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-cluster-ip-service
+spec:
+    type: ClusterIP
+    selector:
+        app: auth
+    ports:
+      - name: auth
+        protocol: TCP
+        port: 3000
+        targetPort: 3000

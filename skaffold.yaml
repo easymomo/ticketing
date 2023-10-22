@@ -1,0 +1,57 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+build:
+  artifacts:
+    - image: easymomo/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: src/**/*.ts
+            dest: .
+    - image: easymomo/nextclient
+      context: client # The context is the root of the build context
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.ts"
+            dest: .
+    - image: easymomo/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: src/**/*.ts
+            dest: .
+    - image: easymomo/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: src/**/*.ts
+            dest: .
+    - image: easymomo/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: easymomo/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+  local:
+    push: false
+manifests:
+  rawYaml:
+    - ./infra/k8s/*

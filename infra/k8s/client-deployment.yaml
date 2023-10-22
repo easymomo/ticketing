@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client # Tell the deployment which pods it should be creating and managing
+  template: # Describe the pod that will be created
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers: # List of containers that should be running inside the pod
+        - name: client # Name of the container, only used within the pod, not externally, for logging purposes
+          image: easymomo/nextclient
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: JWT_KEY
+                  name: jwt-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    app: client
+  ports:
+    - name: client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
