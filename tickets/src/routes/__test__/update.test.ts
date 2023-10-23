@@ -93,7 +93,7 @@ it("updates the ticket if the user provides valid inputs", async () => {
     const ticket = response.body;
 
     await request(app)
-        .put(`/api/tickets/${response.body.id}`)
+        .put(`/api/tickets/${ticket.id}`)
         .set("Cookie", cookie)
         .send({
             title: "valid title updated",
@@ -124,7 +124,7 @@ it("publishes an event", async () => {
     const ticket = response.body;
 
     await request(app)
-        .put(`/api/tickets/${response.body.id}`)
+        .put(`/api/tickets/${ticket.id}`)
         .set("Cookie", cookie)
         .send({
             title: "valid title updated",
