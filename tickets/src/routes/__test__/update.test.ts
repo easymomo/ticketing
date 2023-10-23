@@ -38,7 +38,6 @@ it("returns a 401 if the user does not own the ticket", async () => {
             price: 20,
         });
 
-    // TODO: Fix this test, we cannot access the ticket id from the response response.body.id
     await request(app)
         .put(`/api/tickets/${response.body.id}`)
         .set("Cookie", global.signin())
