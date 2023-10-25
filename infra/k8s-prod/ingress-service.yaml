@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host:  viepe.net
+    - host: viepe.net
       http:
         paths:
           - path: /api/payments/?(.*)
