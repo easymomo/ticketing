@@ -15,7 +15,7 @@ const LandingPage = ({currentUser, tickets}) => {
 
     return (
         <div>
-            <h1>Tickets</h1>
+            <h2>Tickets</h2>SSS
             <br/>
             {tickets.length === 0 && <h4>No tickets found</h4>}
 
