@@ -17,7 +17,8 @@ app.use(express.json());
 
 app.use(cookieSession({
     signed: false, // Disable encryption
-    secure: process.env.NODE_ENV !== "test" // Cookies will be used over HTTPS when not in test environment
+    secure: false, // We disable https for the deployment phase. TODO: Change this after deployment
+    // secure: process.env.NODE_ENV !== "test" // Cookies will be used over HTTPS when not in test environment
 }));
 
 // use the currentUser middleware

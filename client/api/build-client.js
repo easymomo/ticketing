@@ -6,7 +6,8 @@ export default({req}) => {
 
         // Create a predefined version of axios
         return axios.create({
-            baseURL: "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+            // baseURL: "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local", // used for local development
+            baseURL: process.env.NODE_ENV !== "production" ? "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local" : "http://viepe.net",
             headers: req.headers
             // We get the headers from the incoming request and pass them to the one we are creating.
             // We do that because we want to get the cookie from the incoming request and attach it to the request
